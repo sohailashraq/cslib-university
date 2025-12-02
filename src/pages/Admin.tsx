@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Particles from "../components/Particles";
 import {
   Plus,
   Trash2,
@@ -107,9 +108,16 @@ const Admin: React.FC = () => {
     setStats(BookService.getStats());
   };
 
-  const handleDelete = (id: string) => {
-    if (window.confirm("Are you sure you want to delete this book?")) {
-      BookService.deleteBook(id);
+  const handleDelete = async (id: string) => {
+    if (window.confirm("آیا مطمئن هستید می‌خواهید این کتاب را حذف کنید؟")) {
+      const success = await BookService.deleteBook(id);
+      if (success) {
+        alert("کتاب با موفقیت از سایت و سرور حذف شد!");
+      } else {
+        alert(
+          "کتاب از لیست حذف شد، اما ممکن است فایل PDF هنوز در سرور موجود باشد."
+        );
+      }
       refreshData();
     }
   };
@@ -356,6 +364,8 @@ const Admin: React.FC = () => {
               </div>
 
               <div>
+                git commit -m "feat: Complete CS Library with PDF
+                upload/download"
                 <label className="block text-sm text-slate-400 mb-1">
                   Description
                 </label>

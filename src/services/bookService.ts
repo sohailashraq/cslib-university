@@ -1,9 +1,11 @@
-import { Book, AdminStats, CATEGORIES } from "../../types";
+import { Book, AdminStats, CATEGORIES } from "../types";
 import { INITIAL_BOOKS } from "../../constants";
+import { UploadService } from "./uploadService";
 
 const STORAGE_KEY = "cslib_books_v1";
 
 export const BookService = {
+  // این تابع باید وجود داشته باشه:
   getBooks: (): Book[] => {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (!stored) {
@@ -41,10 +43,23 @@ export const BookService = {
     return updatedBook;
   },
 
-  deleteBook: (id: string): void => {
+  deleteBook: async (id: string): Promise<boolean> => {
     const books = BookService.getBooks();
+    const bookToDelete = books.find((b) => b.id === id);
+
+    if (!bookToDelete) return false;
+
+    // حذف از Supabase Storage
+    let supabaseDeleted = false;
+    if (bookToDelete.pdfUrl && bookToDelete.pdfUrl.includes("supabase")) {
+      supabaseDeleted = await UploadService.deletePDF(bookToDelete.pdfUrl);
+    }
+
+    // حذف از localStorage
     const filtered = books.filter((b) => b.id !== id);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+
+    return supabaseDeleted;
   },
 
   getStats: (): AdminStats => {
@@ -59,7 +74,6 @@ export const BookService = {
       if (categoryCounts[b.category] !== undefined) {
         categoryCounts[b.category]++;
       } else {
-        // Handle custom/legacy categories
         categoryCounts[b.category] = (categoryCounts[b.category] || 0) + 1;
       }
     });

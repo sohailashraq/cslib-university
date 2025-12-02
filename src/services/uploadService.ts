@@ -1,31 +1,45 @@
 import { supabase } from "../supabase/client";
 
 export const UploadService = {
+  // آپلود PDF
   async uploadPDF(file: File, bookId: string): Promise<string> {
-    try {
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${bookId}.${fileExt}`;
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${bookId}.${fileExt}`;
 
-      console.log("آپلود فایل:", fileName); // برای دیباگ
+    const { error } = await supabase.storage
+      .from("books")
+      .upload(`pdfs/${fileName}`, file);
+
+    if (error) throw error;
+
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("books").getPublicUrl(`pdfs/${fileName}`);
+
+    return publicUrl;
+  },
+
+  // حذف PDF از Supabase
+  async deletePDF(pdfUrl: string): Promise<boolean> {
+    try {
+      // استخراج نام فایل از URL
+      const fileName = pdfUrl.split("/pdfs/")[1];
+      if (!fileName) return false;
 
       const { error } = await supabase.storage
         .from("books")
-        .upload(`pdfs/${fileName}`, file);
+        .remove([`pdfs/${fileName}`]);
 
       if (error) {
-        console.error("خطا در آپلود:", error);
-        throw error;
+        console.error("خطا در حذف از Supabase:", error);
+        return false;
       }
 
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("books").getPublicUrl(`pdfs/${fileName}`);
-
-      console.log("لینک عمومی:", publicUrl); // برای دیباگ
-      return publicUrl;
+      console.log("✅ فایل از Supabase حذف شد:", fileName);
+      return true;
     } catch (error) {
-      console.error("Upload error:", error);
-      throw new Error("آپلود فایل انجام نشد");
+      console.error("خطا در deletePDF:", error);
+      return false;
     }
   },
 };
