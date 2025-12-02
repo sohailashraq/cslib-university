@@ -1,3 +1,4 @@
+// this is src type
 export type Category =
   | "AI & ML"
   | "Web Development"

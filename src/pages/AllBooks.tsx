@@ -3,7 +3,7 @@ import { Search, Filter } from "lucide-react";
 import { motion } from "framer-motion";
 import BookCard from "../components/BookCard";
 import { BookService } from "../services/bookService";
-import { Book, CATEGORIES, Category } from "../../types";
+import { Book, CATEGORIES, Category } from "../types";
 
 const AllBooks: React.FC = () => {
   const [books, setBooks] = useState<Book[]>([]);

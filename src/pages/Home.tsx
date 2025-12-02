@@ -14,10 +14,10 @@ import {
   BookOpen,
 } from "lucide-react";
 import BookCard from "../components/BookCard";
-import Particles from "../components/Particles"; // اضافه شد
+import Particles from "../components/Particles";
 import TextType from "../components/TextType";
 import { BookService } from "../services/bookService";
-import { Book } from "../../types";
+import { Book } from "../types";
 
 // EmailJS را initialize کن
 const EMAILJS_PUBLIC_KEY = "LxBYjyr2baCquaccR";
@@ -246,7 +246,7 @@ const Home: React.FC = () => {
                    text={["Algorithms", "AI & ML", "Web Dev", "Systems"]}
                 />
               </span> */}
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
+            <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">
               <span className="block text-slate-100">
                 Hariwa CS Online Library
               </span>

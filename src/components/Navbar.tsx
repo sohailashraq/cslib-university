@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, BookOpen, Shield } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "../assets/logo.jpg";
+// تغییر در Navbar.tsx:
+import logo from "../assets/logo.jpg"; // ✅ .png نه .jpg
+// import logo from "/src/assets/logo.jpg";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
