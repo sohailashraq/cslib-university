@@ -1,4 +1,4 @@
-import { Book } from "./types";
+import { Book } from "./src/types";
 
 export const INITIAL_BOOKS: Book[] = [];
 // فقط یه آرایه خالی - تو خودت همه کتاب‌ها رو اضافه می‌کنی

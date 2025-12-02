@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Download, Star, Book as BookIcon } from "lucide-react";
-import { Book } from "../../types";
+import { Book } from "../types";
 import { BookService } from "../services/bookService";
 
 interface BookCardProps {
